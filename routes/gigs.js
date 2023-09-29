@@ -7,10 +7,13 @@ router.get('/',async (req,res)=>{
     try{
         const gigs = await Gig.findAll();
         console.log(gigs);
+        res.render('gigs',{
+            gigs,
+        });
     }catch(err){
         console.log(err);
     }
-    res.sendStatus(200);
+    
 });
 
 router.get('/add',async (req,res)=>{

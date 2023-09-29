@@ -11,6 +11,11 @@ db.authenticate()
 
 const app = express();
 
+app.engine('handlebars',exphbs.engine({defaultLayout: 'main'}));
+app.set('view engine','handlebars');
+
+app.use(express.static(path.join(__dirname,'/public')));
+
 app.get('/',(req,res)=>{
     res.send('Starting codegig project');
 });
