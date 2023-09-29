@@ -3,7 +3,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const path = require('path');
-const db = require('./config/database')
+const db = require('./config/database');
 
 db.authenticate()
     .then(()=> console.log('Database connected...'))
@@ -13,7 +13,10 @@ const app = express();
 
 app.get('/',(req,res)=>{
     res.send('Starting codegig project');
-})
+});
+
+app.use('/gigs',require('./routes/gigs'));
+
 const PORT = process.env.PORT || 2100;
 
 app.listen(PORT,()=>{
