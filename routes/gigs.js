@@ -11,6 +11,32 @@ router.get('/',async (req,res)=>{
         console.log(err);
     }
     res.sendStatus(200);
+});
+
+router.get('/add',async (req,res)=>{
+    const data = {
+        title: 'Simple Wordpress Website',
+        technologies: 'wordpress, php,html,css',
+        budget: '300',
+        description: 'lorem ipsum',
+        contact_email: 'test2@email.com'
+    }
+
+    let {title, technologies, budget, description, contact_email} = data;
+
+    try {
+        await Gig.create({
+            title,
+            technologies,
+            budget,
+            description,
+            contact_email
+        });
+
+        res.redirect('/gigs');
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 module.exports = router;
