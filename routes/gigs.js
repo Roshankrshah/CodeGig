@@ -19,28 +19,52 @@ router.get('/add',(req,res)=>{
 })
 
 router.post('/add',async (req,res)=>{
-    const data = {
-        title: 'Simple Wordpress Website',
-        technologies: 'wordpress, php,html,css',
-        budget: '300',
-        description: 'lorem ipsum',
-        contact_email: 'test2@email.com'
+    let {title, technologies, budget, description, contact_email} = req.body;
+    let errors = [];
+
+    if(!title){
+        errors.push({text: 'Please add a title'});
+    }
+    if(!technologies){
+        errors.push({text: 'Please add a technologies'});
+    }
+    if(!description){
+        errors.push({text: 'Please add a description'});
+    }
+    if(!contact_email){
+        errors.push({text: 'Please add a contact email'});
     }
 
-    let {title, technologies, budget, description, contact_email} = data;
-
-    try {
-        await Gig.create({
+    if(errors.length > 0){
+        res.render('add',{
+            errors,
             title,
             technologies,
-            budget,
+            budget, 
             description,
             contact_email
-        });
+        })
+    }else{
+        if(!budget){
+            budget = 'Unknown';
+        }else{
+            budget = `₹${budget}`;
+        }
 
-        res.redirect('/gigs');
-    } catch (error) {
-        console.log(error);
+        technologies = technologies.toLowerCase().replace(/, /g,',');
+        try {
+            await Gig.create({
+                title,
+                technologies,
+                budget,
+                description,
+                contact_email
+            });
+    
+            res.redirect('/gigs');
+        } catch (error) {
+            console.log(error);
+        }
     }
 })
 
